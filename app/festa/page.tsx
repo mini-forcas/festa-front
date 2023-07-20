@@ -10,9 +10,7 @@ function page() {
   // send message to server
   function submitMessage() {
     let counter = 0;
-    setInterval(() => {
-      socket.emit("yyy", { message: `client message ${counter++}` });
-    });
+    socket.emit("yyy", { message: `client message ${counter++}` });
   }
   return (
     <div>
