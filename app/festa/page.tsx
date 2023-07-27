@@ -8,20 +8,18 @@ function page() {
   const socket = io(`${host}:${port}`);
   socket.on("connection", () => console.log("connect"));
   // send message to server
-  function submitMessage() {
-    let counter = 0;
-    socket.emit("yyy", { message: `client message ${counter++}` });
+  function submitAnswer(ans: number | String) {
+    socket.emit("submitAnswer", ans);
   }
   return (
     <div>
       {/* TODO クリックすると管理者に選択した答えが送信される */}
-      <button className="btn" onClick={() => submitMessage()}>
+      <button className="btn" onClick={() => submitAnswer(1)}>
         1
       </button>
-      <button className="btn">2</button>
-      <button className="btn">3</button>
-      <button className="btn">4</button>
-      <button className="btn">5</button>
+      <button className="btn" onClick={() => submitAnswer(2)}>2</button>
+      <button className="btn" onClick={() => submitAnswer(3)}>3</button>
+      <button className="btn" onClick={() => submitAnswer(4)}>4</button>
     </div>
   );
 }
