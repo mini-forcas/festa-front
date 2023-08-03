@@ -7,6 +7,9 @@ function page() {
   const port = 5000;
   const socket = io(`${host}:${port}`);
   socket.on("connection", () => console.log("connect"));
+  socket.on("receiveAnswer", (ans) => {
+    console.log(ans);
+  });
   // send message to server
   function submitAnswer(ans: number | String) {
     socket.emit("submitAnswer", ans);
@@ -17,9 +20,18 @@ function page() {
       <button className="btn" onClick={() => submitAnswer(1)}>
         1
       </button>
-      <button className="btn" onClick={() => submitAnswer(2)}>2</button>
-      <button className="btn" onClick={() => submitAnswer(3)}>3</button>
-      <button className="btn" onClick={() => submitAnswer(4)}>4</button>
+      <button className="btn" onClick={() => submitAnswer(2)}>
+        2
+      </button>
+      <button className="btn" onClick={() => submitAnswer(3)}>
+        3
+      </button>
+      <button className="btn" onClick={() => submitAnswer(4)}>
+        4
+      </button>
+      <div>
+        <h3>ANS</h3>
+      </div>
     </div>
   );
 }
