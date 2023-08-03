@@ -10,6 +10,9 @@ export const Header = () => {
       <button className="btn">
         <Link href="/admin">ADMIN</Link>
       </button>
+      <button className="btn">
+        <Link href="/festa">USER</Link>
+      </button>
     </div>
   );
 };
