@@ -7,7 +7,7 @@ function page() {
   const port = 5000;
   const socket = io(`${host}:${port}`);
   const [answer, setAnswer] = useState("");
-  const [myAnswer, setMyAnswer] = useState("");
+  const [myAnswer, setMyAnswer] = useState<number>();
 
   socket.on("connection", () => console.log("connect"));
   socket.on("receiveAnswer", (ans) => {
@@ -15,8 +15,9 @@ function page() {
     setAnswer(ans.answer);
   });
   // send message to server
-  function submitAnswer(ans: number | String) {
+  function submitAnswer(ans: number) {
     socket.emit("submitAnswer", ans);
+    setMyAnswer(ans);
   }
   return (
     <div>
@@ -35,9 +36,9 @@ function page() {
       </button>
       <div>
         <h3 className="text-white">自分の答え：</h3>
-        <h3 className="text-white">{answer}</h3>
-        <h3 className="text-white">正解：</h3>
         <h3 className="text-white">{myAnswer}</h3>
+        <h3 className="text-white">正解：</h3>
+        <h3 className="text-white">{answer}</h3>
       </div>
     </div>
   );
