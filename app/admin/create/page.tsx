@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
+import { createClient } from "@supabase/supabase-js";
 
 type Inputs = {
   title: string;
@@ -8,6 +9,11 @@ type Inputs = {
   dateRequired: string;
   people: string;
 };
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
+);
 
 export default function page() {
   const {
@@ -17,6 +23,12 @@ export default function page() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const test = async () => {
+    const { error } = await supabase
+      .from("quizzes")
+      .insert({ admin_id: 1, question: "test", correct_option_id: 1 });
+  };
 
   console.log(watch("title"));
 
@@ -36,6 +48,9 @@ export default function page() {
       {errors.dateRequired && <span>Date field is required</span>}
 
       <input type="submit" />
+      <button className="btn" onClick={() => test()}>
+        CREATE
+      </button>
     </form>
   );
 }
