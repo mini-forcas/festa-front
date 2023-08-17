@@ -11,11 +11,12 @@ function page() {
   const [question, setQuestion] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
+  const [correct, setCorrect] = useState<number>();
 
   const submit = async () => {
     const { data } = await supabase
       .from("quizzes")
-      .insert([{ admin_id: 1, question: question, correct_option_id: 1 }])
+      .insert([{ admin_id: 1, question: question, correct_option_id: correct }])
       .select()
       .single();
 
@@ -35,21 +36,35 @@ function page() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
         ></textarea>
-        <input
-          type="text"
-          placeholder="選択肢1"
-          className="input input-bordered w-full max-w-xs"
-          value={option1}
-          onChange={(e) => setOption1(e.target.value)}
-        />
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="選択肢1"
+            className="input input-bordered w-full max-w-xs"
+            value={option1}
+            onChange={(e) => setOption1(e.target.value)}
+          />
+          <input
+            type="radio"
+            name="radio-1"
+            className="radio"
+            onChange={() => setCorrect(1)}
+          />
+        </div>
       </div>
-      <div className="form-control w-full max-w-xs">
+      <div className="flex items-center">
         <input
           type="text"
           placeholder="選択肢2"
           className="input input-bordered w-full max-w-xs"
           value={option2}
           onChange={(e) => setOption2(e.target.value)}
+        />
+        <input
+          type="radio"
+          name="radio-1"
+          className="radio"
+          onChange={() => setCorrect(2)}
         />
       </div>
       <button className="btn" onClick={() => submit()}>
