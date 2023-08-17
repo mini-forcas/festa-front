@@ -8,19 +8,33 @@ const supabase = createClient(
 );
 
 function page() {
+  const [question, setQuestion] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
 
   const submit = async () => {
-    console.log("GOO");
-    const { error } = await supabase.from("options").insert([
-      { quiz_id: 1, option_text: option1 },
-      { quiz_id: 1, option_text: option2 },
+    const { data } = await supabase
+      .from("quizzes")
+      .insert([{ admin_id: 1, question: question, correct_option_id: 1 }])
+      .select()
+      .single();
+
+    await supabase.from("options").insert([
+      { quiz_id: data.id, option_text: option1 },
+      { quiz_id: data.id, option_text: option2 },
     ]);
   };
+
   return (
     <div className="mt-10">
       <div className="form-control w-full max-w-xs">
+        <h3>問題文</h3>
+        <textarea
+          className="textarea textarea-bordered"
+          placeholder="問題文を入力してください"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        ></textarea>
         <input
           type="text"
           placeholder="選択肢1"
