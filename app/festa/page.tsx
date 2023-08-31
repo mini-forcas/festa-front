@@ -27,15 +27,14 @@ function page() {
   const host = "http://localhost";
   const port = 5000;
   const socket = io(`${host}:${port}`);
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState<number>();
   const [myAnswer, setMyAnswer] = useState<string>();
   const [data, setData] = useState<DataType[]>([]);
   const [options, setOptions] = useState<OptionsType[]>([]);
 
   socket.on("connection", () => console.log("connect"));
-  socket.on("receiveAnswer", (ans) => {
-    console.log(ans.answer);
-    setAnswer(ans.answer);
+  socket.on("receiveAnswer", () => {
+    setAnswer(data[0].correct_option_id);
   });
   // send message to server
   function submitAnswer(ans: string) {

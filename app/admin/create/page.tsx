@@ -2,7 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
-
+import { io } from "socket.io-client";
 type Inputs = {
   title: string;
   exampleRequired: string;
@@ -14,6 +14,13 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
+const host = "http://localhost";
+const port = 5000;
+const socket = io(`${host}:${port}`);
+
+const showAnswer = () => {
+  socket.emit("showAnswer");
+};
 
 export default function page() {
   const {
@@ -50,6 +57,9 @@ export default function page() {
       <input type="submit" />
       <button className="btn" onClick={() => test()}>
         CREATE
+      </button>
+      <button className="btn" onClick={showAnswer}>
+        答えを表示する
       </button>
     </form>
   );
