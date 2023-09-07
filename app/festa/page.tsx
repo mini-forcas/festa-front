@@ -1,26 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { socket, supabase } from "@/constants/const";
-
-type DataType = {
-  id: number;
-  admin_id: number;
-  question: string;
-  correct_option_id: number;
-  created_at: string;
-  updated_at: string;
-};
-type OptionsType = {
-  id: number;
-  quiz_id: number;
-  option_text: string;
-  created_at: string;
-  updated_at: string;
-};
+import { QuizChoiceType, QuizType } from "@/types/Quiz";
 
 function page() {
-  const [data, setData] = useState<DataType[]>([]);
-  const [options, setOptions] = useState<OptionsType[]>([]);
+  const [data, setData] = useState<QuizType[]>([]);
+  const [options, setOptions] = useState<QuizChoiceType[]>([]);
   const [answer, setAnswer] = useState<number>();
   const [myAnswer, setMyAnswer] = useState<string>();
 
@@ -44,7 +29,7 @@ function page() {
       .from("options")
       .select("*")
       .eq("quiz_id", "8");
-    return data as OptionsType[];
+    return data as QuizChoiceType[];
   };
   useEffect(() => {
     fetch();
