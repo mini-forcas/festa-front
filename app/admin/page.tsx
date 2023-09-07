@@ -1,9 +1,7 @@
 "use client";
+import { socket } from "@/constants/const";
 import Link from "next/link";
 import React from "react";
-import { io } from "socket.io-client";
-
-const socket = io("localhost:5000");
 
 export default function page() {
   function showAnswer() {

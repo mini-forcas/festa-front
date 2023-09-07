@@ -1,22 +1,14 @@
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { createClient } from "@supabase/supabase-js";
-import { io } from "socket.io-client";
+import { socket, supabase } from "@/constants/const";
+
 type Inputs = {
   title: string;
   exampleRequired: string;
   dateRequired: string;
   people: string;
 };
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
-);
-const host = "http://localhost";
-const port = 5000;
-const socket = io(`${host}:${port}`);
 
 const showAnswer = () => {
   socket.emit("showAnswer");

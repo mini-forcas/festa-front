@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { createClient } from "@supabase/supabase-js";
+import { socket, supabase } from "@/constants/const";
 
 type DataType = {
   id: number;
@@ -18,19 +17,12 @@ type OptionsType = {
   created_at: string;
   updated_at: string;
 };
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
-);
 
 function page() {
-  const host = "http://localhost";
-  const port = 5000;
-  const socket = io(`${host}:${port}`);
-  const [answer, setAnswer] = useState<number>();
-  const [myAnswer, setMyAnswer] = useState<string>();
   const [data, setData] = useState<DataType[]>([]);
   const [options, setOptions] = useState<OptionsType[]>([]);
+  const [answer, setAnswer] = useState<number>();
+  const [myAnswer, setMyAnswer] = useState<string>();
 
   socket.on("connection", () => console.log("connect"));
   socket.on("receiveAnswer", () => {
