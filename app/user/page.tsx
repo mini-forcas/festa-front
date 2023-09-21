@@ -17,7 +17,7 @@ const page = () => {
   };
   return (
     <div>
-      <h5>YOUR NAME</h5>
+      <h5>あなたの名前を書いてね</h5>
       <input
         type="text"
         placeholder="Type here"
@@ -25,9 +25,9 @@ const page = () => {
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-      <h3>{userName}</h3>
+      <p>送信してクイズに参加する</p>
       <button className="btn" onClick={() => submitUserData()}>
-        Submit
+        送信
       </button>
     </div>
   );

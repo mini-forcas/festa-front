@@ -17,7 +17,7 @@ function page() {
   const [quiz, setQuiz] = useState<QuizType[]>([]);
   const [choices, setChoices] = useState<QuizChoiceType[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState<string | number>();
-  const [myAnswer, setMyAnswer] = useState<string>();
+  const [myAnswer, setMyAnswer] = useState<number>();
   const [user, setUser] = useState<User[]>([]);
 
   socket.on("connection", () => console.log("connect"));
@@ -25,7 +25,7 @@ function page() {
     setCorrectAnswer(ans.answer);
   });
   // send message to server
-  function submitAnswer(ans: string) {
+  function submitAnswer(ans: number) {
     socket.emit("submitAnswer", ans);
     setMyAnswer(ans);
   }
@@ -33,14 +33,13 @@ function page() {
     const { data, error } = await supabase.from("quizzes").select();
     if (data === null) return;
     setQuiz(data);
-    console.log(`QUIZ→${data[0].correct_option_id}`);
   };
   const fetchChoiceByQuiz = async () => {
     let { data } = await supabase
       .from("options")
       .select("*")
-      // TODO
-      .eq("quiz_id", "8");
+      // TODO idを固定にしている。任意のquiz_idに基づいて取得したい。
+      .eq("quiz_id", "10");
     return data as QuizChoiceType[];
   };
   useEffect(() => {
@@ -69,6 +68,9 @@ function page() {
 
   return (
     <div>
+      <h1>{user[0]?.name}</h1>
+      <h1>第1問</h1>
+      <h2>{quiz[quiz.length - 1]?.question}</h2>
       <div>
         {choices.map((choice) => {
           {
@@ -76,17 +78,13 @@ function page() {
           }
           return (
             <div key={choice.id}>
-              <button
-                className="btn"
-                onClick={() => submitAnswer(choice.option_text)}
-              >
+              <button className="btn" onClick={() => submitAnswer(choice.id)}>
                 {choice.option_text}
               </button>
             </div>
           );
         })}
       </div>
-      <h3>{user[0]?.name}</h3>
       <h3 className="text-white">自分の答え：</h3>
       <h3 className="text-white">{myAnswer}</h3>
       <h3 className="text-white">正解：</h3>

@@ -4,7 +4,7 @@ import React from "react";
 export const Header = () => {
   return (
     <div>
-      <button className="btn">
+      {/* <button className="btn">
         <Link href="/">HOME</Link>
       </button>
       <button className="btn">
@@ -12,7 +12,7 @@ export const Header = () => {
       </button>
       <button className="btn">
         <Link href="/festa">USER</Link>
-      </button>
+      </button> */}
     </div>
   );
 };
