@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import { socket, supabase } from "@/constants/const";
 import { QuizChoiceType, QuizType } from "@/types/Quiz";
 
-type AnsType = {
-  answer: string | number;
-};
 type User = {
   id: string;
   socket_id: string;
@@ -21,8 +18,8 @@ function page() {
   const [user, setUser] = useState<User[]>([]);
 
   socket.on("connection", () => console.log("connect"));
-  socket.on("receiveAnswer", (ans: AnsType) => {
-    setCorrectAnswer(ans.answer);
+  socket.on("receiveAnswer", (ans: string) => {
+    setCorrectAnswer(ans);
   });
   // send message to server
   function submitAnswer(ans: number) {

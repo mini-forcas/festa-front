@@ -10,8 +10,12 @@ type Inputs = {
   people: string;
 };
 
-const showAnswer = () => {
-  socket.emit("showAnswer");
+const showAnswer = async () => {
+  let { data, error } = await supabase.from("quizzes").select("*");
+  if (data) {
+    console.log(data[0]);
+    socket.emit("showAnswer", data[0].correct_option_id);
+  }
 };
 
 export default function page() {
