@@ -8,7 +8,6 @@ function Login() {
   const [name, setName] = useState<string>("");
   function submitUser() {
     if (name.length < 1) alert("名前は1文字以上を入力してください");
-    console.log(name);
     router.push("./festa/1");
   }
   return (

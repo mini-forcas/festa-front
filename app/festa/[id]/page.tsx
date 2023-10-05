@@ -1,14 +1,27 @@
 "use client";
 
-import { useRouter } from "next/router";
-import React from "react";
+import { socket } from "@/constants/const";
+import { useParams } from "next/navigation";
+import React, { useState } from "react";
 
 function page() {
-  const router = useRouter();
+  const params = useParams();
+  const [waitFlag, setWaitFlag] = useState(true);
+  socket.on("showQuiz", () => {
+    setWaitFlag(false);
+  });
   return (
     <div>
-      <h1>test</h1>
-      <h1>{router.query.slug}</h1>
+      {/* <h1>{params.id}</h1> */}
+      {waitFlag ? (
+        <div>
+          <h1>待機中...ちょっと待ってね</h1>
+        </div>
+      ) : (
+        <div>
+          <h1>第一問！！</h1>
+        </div>
+      )}
     </div>
   );
 }
