@@ -3,31 +3,52 @@ import { supabase } from "@/constants/const";
 import { QuizType } from "@/types/Quiz";
 import React, { useEffect, useState } from "react";
 
+type OptionsType = {
+  option_text: string;
+};
+
+type QuizAndOptionsType = {
+  question: string;
+  options: OptionsType[];
+};
+
 function page() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [question, setQuestion] = useState("");
-  const [quizzes, setQuizzes] = useState<QuizType[]>();
-  function showSelectedQuiz(quizQuestion: string) {
-    setQuestion(quizQuestion);
+  const [options, setOptions] = useState<OptionsType[]>([]);
+  const [quizzes, setQuizzes] = useState<QuizAndOptionsType[]>();
+  function showSelectedQuiz(quiz: QuizAndOptionsType) {
+    setQuestion(quiz.question);
+    setOptions(quiz.options);
     setShowQuiz(true);
+    // TODO：ユーザーが問題に回答できるようにsocketを送信する
   }
   function QuestionPage() {
     return (
       <div>
-        <h1>問題！！</h1>
         <h1 className="underline decoration-sky-500 text-6xl">{question}</h1>
+        {options?.map((option, index) => (
+          <h1 className="text-4xl" key={index}>
+            {index + 1}: {option.option_text}
+          </h1>
+        ))}
       </div>
     );
   }
   async function getQuiz() {
-    let { data, error } = await supabase.from("quizzes").select("*");
-    // const { data, error } = await supabase
-    //   .from("quizzes")
-    //   .select("question, options!inner(option_text)")
-    //   .eq("options.quiz_id", "id");
-    if (data === null) return;
-    // console.log(data);
-    setQuizzes(data);
+    try {
+      let { data, error } = await supabase
+        .from("quizzes")
+        .select("question, options!inner(option_text)");
+      console.log(data);
+      setQuizzes(data);
+      if (data === null) return;
+    } catch (e) {
+      console.log("----ERROR----");
+      console.log(e);
+      console.log("----ERROR----");
+    }
+    console.log("--------");
   }
   useEffect(() => {
     getQuiz();
@@ -41,7 +62,7 @@ function page() {
             <button
               key={quiz.id}
               className="btn w-full h-full"
-              onClick={() => showSelectedQuiz(quiz.question)}
+              onClick={() => showSelectedQuiz(quiz)}
             >
               第{index + 1}問を開始する
             </button>
