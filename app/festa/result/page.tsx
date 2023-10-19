@@ -1,7 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const TestData = Array.from({ length: 10 }, (_, index) => ({
+type ResultData = {
+  id: number;
+  name: string;
+  correctSum: number;
+  answerTime: number;
+  rank: number;
+};
+
+const TestData: ResultData[] = Array.from({ length: 10 }, (_, index) => ({
   id: index,
   name: `name${index + 1}`,
   correctSum: 5,
@@ -11,10 +19,12 @@ const TestData = Array.from({ length: 10 }, (_, index) => ({
 
 const Page = () => {
   const [showRanking, setShowRanking] = useState(false);
-  const [visibleData, setVisibleData] = useState([]);
+  const [visibleData, setVisibleData] = useState<ResultData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    let audio = new Audio("/drum.mp3");
+    let first = new Audio("/1st.mp3");
     if (showRanking) {
       // ボタンを押したらランキングを表示し、データをランキング順にソートする
       const sortedData = [...TestData].sort(
@@ -23,13 +33,20 @@ const Page = () => {
 
       // ランキングの低い人から順に表示
       const timer = setInterval(() => {
-        if (currentIndex < sortedData.length) {
+        if (visibleData.length + 1 == sortedData.length) {
+          audio.pause();
+          audio = new Audio("/drum.mp3");
           setVisibleData((prevData) => [sortedData[currentIndex], ...prevData]);
           setCurrentIndex((prevIndex) => prevIndex + 1);
-        } else {
+          first.play();
           clearInterval(timer); // 全データが表示されたらタイマーを停止
+        } else if (currentIndex < sortedData.length) {
+          setVisibleData((prevData) => [sortedData[currentIndex], ...prevData]);
+          setCurrentIndex((prevIndex) => prevIndex + 1);
         }
       }, 1000); // 1秒ごとに表示
+
+      audio.play();
 
       return () => {
         clearInterval(timer);
