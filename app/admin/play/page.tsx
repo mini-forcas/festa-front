@@ -41,7 +41,9 @@ function page() {
         .from("quizzes")
         .select("question, options!inner(option_text)");
       console.log(data);
-      setQuizzes(data);
+      if (data !== null) {
+        setQuizzes(data);
+      }
       if (data === null) return;
     } catch (e) {
       console.log("----ERROR----");
@@ -60,7 +62,7 @@ function page() {
         {quizzes?.map((quiz, index) => {
           return (
             <button
-              key={quiz.id}
+              key={quiz.question}
               className="btn w-full h-full"
               onClick={() => showSelectedQuiz(quiz)}
             >
