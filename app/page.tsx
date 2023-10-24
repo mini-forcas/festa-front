@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
@@ -17,8 +18,11 @@ export default async function Index() {
         </div>
       </nav>
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
-      <div className="flex flex-col gap-8 text-foreground mt-40">
+      <div className="flex flex-col gap-8 text-foreground my-40">
         <Image src="/static/forcas-quiz.png" alt="Q" width={300} height={300} />
+        <div className="flex justify-center underline">
+          <Link href="/user">Come on, Enjoy the Quiz!!</Link>
+        </div>
       </div>
     </div>
   );
