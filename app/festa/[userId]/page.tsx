@@ -12,7 +12,7 @@ function page() {
   });
   return (
     <div>
-      {/* <h1>{params.id}</h1> */}
+      <h1>{params.id}</h1>
       {waitFlag ? (
         <div>
           <h1>待機中...ちょっと待ってね</h1>

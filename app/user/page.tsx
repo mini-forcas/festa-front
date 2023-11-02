@@ -13,7 +13,7 @@ const page = () => {
       .from("users")
       .insert([{ socket_id: userId, name: userName }])
       .select();
-    router.push(`/festa?userId=${userId}`);
+    router.push(`/festa/${userId}`);
   };
   return (
     <div>
